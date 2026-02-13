@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>シンプルカウンター</title>
+    <style>
+      :root {
+        color-scheme: light;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        background: #f4f6f8;
+        color: #1f2933;
+      }
+
+      .counter {
+        width: min(420px, 92vw);
+        padding: 2rem;
+        border-radius: 12px;
+        background: #ffffff;
+        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+        text-align: center;
+      }
+
+      h1 {
+        margin: 0 0 1rem;
+        font-size: 1.25rem;
+      }
+
+      #count {
+        font-size: clamp(3rem, 16vw, 6rem);
+        font-weight: 700;
+        margin: 0 0 1.5rem;
+        line-height: 1;
+      }
+
+      .buttons {
+        display: flex;
+        gap: 0.75rem;
+        justify-content: center;
+      }
+
+      button {
+        border: none;
+        border-radius: 8px;
+        padding: 0.7rem 1rem;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        min-width: 72px;
+        transition: transform 0.05s ease, opacity 0.15s ease;
+      }
+
+      button:active {
+        transform: translateY(1px);
+      }
+
+      button:hover {
+        opacity: 0.9;
+      }
+
+      .inc {
+        background: #22c55e;
+        color: white;
+      }
+
+      .dec {
+        background: #ef4444;
+        color: white;
+      }
+
+      .reset {
+        background: #e5e7eb;
+        color: #111827;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="counter" aria-live="polite">
+      <h1>カウンター</h1>
+      <p id="count">0</p>
+      <div class="buttons">
+        <button class="dec" id="decrement" type="button">-1</button>
+        <button class="inc" id="increment" type="button">+1</button>
+        <button class="reset" id="reset" type="button">リセット</button>
+      </div>
+    </main>
+
+    <script>
+      const STORAGE_KEY = "simpleCounterValue";
+      const countEl = document.getElementById("count");
+      const incrementBtn = document.getElementById("increment");
+      const decrementBtn = document.getElementById("decrement");
+      const resetBtn = document.getElementById("reset");
+
+      const loadCount = () => {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        const parsed = Number(saved);
+        return Number.isFinite(parsed) ? parsed : 0;
+      };
+
+      let count = loadCount();
+
+      const render = () => {
+        countEl.textContent = String(count);
+        localStorage.setItem(STORAGE_KEY, String(count));
+      };
+
+      incrementBtn.addEventListener("click", () => {
+        count += 1;
+        render();
+      });
+
+      decrementBtn.addEventListener("click", () => {
+        count -= 1;
+        render();
+      });
+
+      resetBtn.addEventListener("click", () => {
+        count = 0;
+        render();
+      });
+
+      render();
+    </script>
+  </body>
+</html>
